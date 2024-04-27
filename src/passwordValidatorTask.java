@@ -1,23 +1,34 @@
 package src;
 
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class passwordValidatorTask implements Runnable {
     private final String password;
+    private final FileWriter fileWriter;
 
-    public passwordValidatorTask(String password) {
+    public passwordValidatorTask(String password, FileWriter fileWriter) {
         this.password = password;
+        this.fileWriter = fileWriter;
     }
 
     @Override
     public void run() {
         boolean isValid = validatePassword(password);
+        String resultMessage;
         if (isValid) {
-            System.out.println("La contraseña '" + password + "' es valida.");
+            resultMessage = "La contraseña '" + password + "' es valida.";
         } else {
-            System.out.println("La contraseña '" + password + "' no es valida.");
+            resultMessage = "La contraseña '" + password + "' no es valida.";
         }
+        try {
+            fileWriter.write(resultMessage + "\n");
+            fileWriter.flush();
+        } catch (IOException e) {
+        }
+        System.out.println(resultMessage);
     }
 
     public boolean validatePassword(String password) {

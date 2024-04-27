@@ -1,0 +1,2 @@
+La contraseña 'Hello, World!' no es valida.
+La contraseña 'Hell0, World!' es valida.

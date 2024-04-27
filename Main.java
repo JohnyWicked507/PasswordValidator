@@ -1,5 +1,7 @@
 import src.passwordValidatorTask;
 
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.Scanner;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -13,10 +15,13 @@ public class Main {
         String input;
         boolean isExit = false;
 
-        while (!isExit) {
-            input = scanner.nextLine();
-            isExit = checkExit(input);
-            executor.execute(new passwordValidatorTask(input));
+        try (FileWriter fileWriter = new FileWriter("register.txt")) {
+            while (!isExit) {
+                input = scanner.nextLine();
+                isExit = checkExit(input);
+                executor.execute(new passwordValidatorTask(input, fileWriter));
+            }
+        } catch (IOException e) {
         }
 
         System.out.println("Bye bye!");
